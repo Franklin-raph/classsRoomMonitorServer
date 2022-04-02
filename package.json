@@ -8,10 +8,6 @@
     "dev": "nodemon app.js",
     "start" : "node app"
   },
-  "engines": {
-    "node": "16.13.0",
-    "npm": "8.1.0"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
