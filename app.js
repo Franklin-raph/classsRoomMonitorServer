@@ -23,6 +23,6 @@ app.use('/auth/student', require('./routes/auth/studentsAuth'))
 app.use('/student', require('./routes/student/studentRoutes'))
 app.use('/assessment', require('./routes/student/studentRoutes'))
 
-app.get('/', (req, res) => {
+app.get('*', (req, res) => {
     res.send("Index Route")
 })
