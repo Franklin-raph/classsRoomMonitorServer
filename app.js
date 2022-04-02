@@ -24,5 +24,5 @@ app.use('/student', require('./routes/student/studentRoutes'))
 app.use('/assessment', require('./routes/student/studentRoutes'))
 
 app.get('*', (req, res) => {
-    res.send("Index Route")
+    res.send("Home Route")
 })
