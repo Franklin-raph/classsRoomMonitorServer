@@ -17,7 +17,7 @@ app.use('/student', require('./routes/student/studentRoutes'))
 app.use('/assessment', require('./routes/student/studentRoutes'))
 
 app.get('/', (req, res) => {
-    res.send("Welcome to Home Route")
+    res.send("Welcome to the Home Route")
 })
 
 const port = process.env.PORT || 5000;
