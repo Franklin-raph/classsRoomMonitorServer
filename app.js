@@ -1,6 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-const dotenv = require('dotenv').config()
+require('dotenv').config()
 const { connectionMethod } = require('./config/db')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
@@ -16,13 +16,10 @@ app.use('/auth/student', require('./routes/auth/studentsAuth'))
 app.use('/student', require('./routes/student/studentRoutes'))
 app.use('/assessment', require('./routes/student/studentRoutes'))
 
-app.get('/', (req, res) => {
-    res.send("Home Route")
-})
 
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
-app.listen(port, () => {
+app.listen(PORT, () => {
     console.log(`Server is running on port ${port}`)
     connectionMethod()
 })
