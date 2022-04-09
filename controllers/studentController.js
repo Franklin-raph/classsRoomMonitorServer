@@ -225,7 +225,7 @@ const forgotPassword = async (req, res) => {
     console.log(payload)
 
     const token = jwt.sign(payload, secret, {expiresIn: "15h"})
-    const link = `http://localhost:3000/student/resetpassword/${student.studentID}/${token}`
+    const link = `https://classmonitor.netlify.app/student/resetpassword/${student.studentID}/${token}`
 
 
      // Code for sending email
