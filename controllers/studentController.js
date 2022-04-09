@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const { v4: uuidv4 } = require('uuid');
-
+const nodemailer = require('nodemailer')
 
 const registerStudent =  async (req, res) => {
     try {
@@ -203,6 +203,124 @@ const uploadProfilePic = async (req, res) => {
     
 }
 
+// Student Forgot password request
+const forgotPassword = async (req, res) => {
+   
+    const { email } = req.body
+    const student = await Student.findOne({email})
+
+     // check if email exists
+    if(student === null){
+        res.status(404).json({msg:"Email does not exist"})
+        return
+    }
+
+    // User exist and now create a one time reset link valid for 15mins
+    const secret = process.env.JWT_SECRET + student.password
+    const payload = {
+        email: student.email,
+        id:student._id
+    }
+
+    console.log(payload)
+
+    const token = jwt.sign(payload, secret, {expiresIn: "15h"})
+    const link = `http://localhost:3000/student/resetpassword/${student.studentID}/${token}`
+
+
+     // Code for sending email
+     const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.TEST_GMAIL,
+          pass: process.env.TEST_GMAIL_PASSWORD
+        }
+      });
+      
+      const mailOptions = {
+        from: process.env.TEST_GMAIL,
+        to: student.email,
+        subject: 'Sending Email From Class Monitor App',
+        html: link,
+      };
+      
+      transporter.sendMail(mailOptions, (error, info)=>{
+        if (error) {
+          console.log(error + "Error here");
+        } else {
+          console.log('Email sent: ' + info.response);
+          console.log(info)
+        }
+      });
+
+    res.status(200).json({passwordResetLink:link})
+}
+
+
+// Student password reset get route
+const getStudentPasswordResetRoute = async (req, res) => {
+    const { student_id, token } = req.params;
+    const student = await Student.findOne({studentID : req.params.student_id})
+
+    console.log(student_id)
+    console.log(student)
+
+    // check if the studentID exists
+    if(student_id !== student.studentID) return res.status(404).send({msg:`Student with id ${student_id} doesn't exist`})
+
+    // verify the token since we have a valid id and a valid user with the id
+    // we would use process.env.JWT_SECRET + student.password to verify the token cos that is what i used in signing the token up
+    const secret = process.env.JWT_SECRET + student.password
+    try {
+        const payload = jwt.verify(token, secret)
+        return res.status(200).json({student})
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({msg: error.message})
+    }
+}
+
+const updateStudentPassword = async (req, res) => {
+    const { student_id, token } = req.params;
+    const student = await Student.findOne({studentID : req.params.student_id})
+
+    // check if the studentID exists
+    if(student_id !== student.studentID) return res.status(404).send({msg:`Student with id ${student_id} doesn't exist`})
+
+    // verify the token since we have a valid id and a valid user with the id
+    // check for the user with this id and update the password field
+    const secret = process.env.JWT_SECRET + student.password
+    try {
+        const payload = jwt.verify(token, secret)
+        
+        await Student.findOne({ studentID: req.params.student_id })
+            .then( async (signedInStudent) => {
+                console.log(signedInStudent)
+                signedInStudent.avatar = signedInStudent.avatar
+                signedInStudent.cloudinary_id = signedInStudent.cloudinary_id 
+                signedInStudent.name = signedInStudent.name
+                signedInStudent.email = signedInStudent.email;
+                signedInStudent.phoneNum = signedInStudent.phoneNum;
+                signedInStudent.gender = signedInStudent.gender;
+                signedInStudent.address =signedInStudent.address;
+                signedInStudent.gitHub = signedInStudent.giithub;
+                signedInStudent.studentID = signedInStudent.studentID;
+
+                const salt = await bcrypt.genSalt(10);
+                signedInStudent.password = await bcrypt.hash(req.body.password, salt)
+
+                await signedInStudent.save();
+                return res.status(200).json({signedInStudent})
+            })
+
+        
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({msg: error.message})
+    }
+}
 
 
 module.exports = {
@@ -212,5 +330,8 @@ module.exports = {
     studentLogout,
     getAStudent,
     studentProfileUpdate,
-    uploadProfilePic
+    uploadProfilePic,
+    forgotPassword,
+    getStudentPasswordResetRoute,
+    updateStudentPassword
 }
