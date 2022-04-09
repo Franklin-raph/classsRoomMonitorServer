@@ -30,6 +30,31 @@ const registerStudent =  async (req, res) => {
         student.password = await bcrypt.hash(password, salt)
         await student.save();
 
+             // Code for sending email
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.TEST_GMAIL,
+                pass: process.env.TEST_GMAIL_PASSWORD,
+            }
+        });
+        
+        const mailOptions = {
+            from: process.env.TEST_GMAIL,
+            to: student.email,
+            subject: 'Sending Email From Class Monitor App',
+            html: `Your student id is ${student_id}`,
+        };
+        
+        transporter.sendMail(mailOptions, (error, info)=>{
+            if (error) {
+            console.log(error + "Error here");
+            } else {
+            console.log('Email sent: ' + info.response);
+            console.log(info)
+            }
+        });
+
         const createToken = (id) => {
             return jwt.sign({ id }, process.env.JWT_SECRET, {
                 expiresIn: 60*60*1000*24*3
@@ -232,8 +257,8 @@ const forgotPassword = async (req, res) => {
      const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-          user: process.env.TEST_GMAIL,
-          pass: process.env.TEST_GMAIL_PASSWORD
+            user: process.env.TEST_GMAIL,
+            pass: process.env.TEST_GMAIL_PASSWORD,
         }
       });
       
