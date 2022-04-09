@@ -43,7 +43,9 @@ const registerStudent =  async (req, res) => {
             from: process.env.TEST_GMAIL,
             to: student.email,
             subject: 'Sending Email From Class Monitor App',
-            html: `Your student id is ${student_id}`,
+            html: `Thank you for registering with Technobs Digital Solutions via the class monitor app.<br />
+            Your student id is <span style:'font-weight:bold'>${student_id}</span>
+            `,
         };
         
         transporter.sendMail(mailOptions, (error, info)=>{
