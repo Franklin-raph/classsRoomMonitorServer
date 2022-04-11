@@ -7,7 +7,7 @@ router.post('/login', loginAdmin);
 
 router.post('/register', registerAdmin)
 
-router.get('/logout', adminLogout)
+// router.get('/logout', adminLogout)
 
 
 module.exports = router;
