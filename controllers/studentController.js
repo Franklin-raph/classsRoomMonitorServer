@@ -1,4 +1,5 @@
 const Student = require('../models/studentModel');
+const Admin = require('../models/adminModel');
 const cloudinary = require('../config/cloudinary')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');

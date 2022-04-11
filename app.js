@@ -15,6 +15,7 @@ app.use(cookieParser())
 app.use('/auth/student', require('./routes/auth/studentsAuth'))
 app.use('/student', require('./routes/student/studentRoutes'))
 app.use('/assessment', require('./routes/student/studentRoutes'))
+app.use('/auth/admin', require('./routes/auth/adminAuth'))
 
 app.get('/', (req, res) => {
     res.send("Welcome to the Home Route")
