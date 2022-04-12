@@ -5,9 +5,9 @@ const { loginAdmin, registerAdmin, adminLogout } = require('../../controllers/ad
 
 router.post('/login', loginAdmin);
 
-router.post('/register', registerAdmin)
+// router.post('/register', registerAdmin)
 
-// router.get('/logout', adminLogout)
+router.get('/logout', adminLogout)
 
 
 module.exports = router;

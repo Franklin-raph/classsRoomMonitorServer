@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const { getAllStudent, getAStudent, studentProfileUpdate, uploadProfilePic, forgotPassword, getStudentPasswordResetRoute, updateStudentPassword } = require('../../controllers/studentController');
-const { studentAssessment, poststudentAssessmentSolution, getStudentAssessment, getStudentAssessmentSolution, } = require('../../controllers/studentAssessmentController');
+const { studentAssessment, poststudentAssessmentSolution, getStudentAssessment, getStudentAssessmentSolution, } = require('../../controllers/studentAndAdminAssessmentController');
 const { requireAuth, checkStudent } = require('../../middlewares/auth');
 const upload = require('../../controllers/multer');
 
