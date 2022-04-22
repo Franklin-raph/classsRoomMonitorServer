@@ -6,7 +6,6 @@ const { requireAuth, checkStudent } = require('../../middlewares/auth');
 const upload = require('../../controllers/multer');
 
 // router.route()
-
 router.get('/', getAllStudent)
 
 // admin posting assessment
