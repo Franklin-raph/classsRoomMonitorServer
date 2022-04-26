@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const { v4: uuidv4 } = require('uuid');
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
 
 const registerStudent =  async (req, res) => {
     try {
