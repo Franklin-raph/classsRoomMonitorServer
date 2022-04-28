@@ -9,20 +9,20 @@ const nodemailer = require('nodemailer');
 
 const registerStudent =  async (req, res) => {
     try {
-        const { name, email, password, phoneNum, gender, address, github } = req.body
+        const { firstName, lastName, email, password, phoneNum, gender, address, github } = req.body
         // const result = await cloudinary.uploader.upload(req.file.path)
 
-        let student = await Student.findOne({name})
+        // let student = await Student.findOne({name})
         let studentEmail = await Student.findOne({email})
 
-        if(student) return res.status(400).json({ msg:"Username alraedy exists" })
+        // if(student) return res.status(400).json({ msg:"Username alraedy exists" })
 
         if(studentEmail) return res.status(400).json({ msg: "Email already exists"})
 
         const student_id = `TN-${uuidv4()}`;
 
         student = new Student({
-            name, email, password, phoneNum, gender, address, studentID:student_id, github, avatar:"" , cloudinary_id:""
+            firstName, lastName, email, password, phoneNum, gender, address, studentID:student_id, github, avatar:"" , cloudinary_id:""
         })
 
         console.log(student)
@@ -31,7 +31,7 @@ const registerStudent =  async (req, res) => {
         student.password = await bcrypt.hash(password, salt)
         await student.save();
 
-             // Code for sending email
+        // Code for sending email
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {

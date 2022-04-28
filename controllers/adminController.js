@@ -1,12 +1,11 @@
+const cloudinary = require('../config/cloudinary');
 const Student = require('../models/studentModel');
-const Admin = require('../models/adminModel')
-const cloudinary = require('../config/cloudinary')
+const Admin = require('../models/adminModel');
+const nodemailer = require('nodemailer');
+const { v4: uuidv4 } = require('uuid');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
-const { v4: uuidv4 } = require('uuid');
-const nodemailer = require('nodemailer')
-
 
 // Login student
 const loginAdmin = async (req, res) => {
@@ -118,7 +117,7 @@ const getAllStudent = async (req, res) => {
     // console.log(student)
     try {
         const students = await Student.find().sort({ createdAt: -1 });
-        const allStu = students.map(({name,email,studentID,phoneNum,gender,github, avatar}) => ({name,email,studentID,phoneNum,gender,github, avatar}))
+        const allStu = students.map(({name,email,studentID,phoneNum,gender,github, avatar}) => ({name,email,studentID,phoneNum,gender,github,avatar}))
         res.json(allStu);
 
     } catch (error) {

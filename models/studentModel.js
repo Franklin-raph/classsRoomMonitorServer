@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 
 const StudentSchema = mongoose.Schema({
-    name: {
+    firstName: {
+        type: String,
+    },
+    lastName: {
         type: String,
     },
     email:{
